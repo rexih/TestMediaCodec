@@ -7,8 +7,6 @@ import java.lang.ref.WeakReference
 import java.nio.ByteBuffer
 
 
-
-
 /**
  *
  * @package cn.rexih.android.testmediacodec
@@ -23,7 +21,7 @@ object Player {
     var filepath: String? = null
     var isPlaying = false
     var isPaused = false
-    val TIMEOUT_US: Long = (0.01*1000000).toLong()
+    val TIMEOUT_US: Long = (0.01 * 1000000).toLong()
     val TAG = "Player"
 
     var refThreadVideo: WeakReference<Thread>? = null
@@ -51,7 +49,7 @@ object Player {
         clearRef()
     }
 
-    fun clearRef(){
+    fun clearRef() {
         refThreadVideo?.clear()
         refThreadAudio?.clear()
     }
@@ -76,21 +74,21 @@ object Player {
     }
 
     @Synchronized
-    fun stop(){
+    fun stop() {
         isPlaying = false
     }
 
     @Synchronized
-    fun pause(){
+    fun pause() {
         isPaused = true
     }
 
     @Synchronized
-    fun resume(){
+    fun resume() {
         isPaused = false
     }
 
-    data class AudioDecode(val filepath: String):Runnable{
+    data class AudioDecode(val filepath: String) : Runnable {
 
         private var inputBufferSize = 1
 
@@ -101,7 +99,7 @@ object Player {
 
             // 2. 获取特定的track的Id
             val index = getTargetTrackIndex(extractor, "audio/")
-            if (index<0){
+            if (index < 0) {
                 return
             }
 
@@ -116,7 +114,7 @@ object Player {
             // 5. 根据track的信息创建decoder
             extractor.selectTrack(index)
             val decoder = MediaCodec.createDecoderByType(mime)
-            decoder.configure(trackFormat,null,null,0)
+            decoder.configure(trackFormat, null, null, 0)
 
             // 6. decoder开始
             decoder.start()
@@ -129,7 +127,7 @@ object Player {
 
             // 7. 初始化解码后音频流数据的buf
             var sz = outputBuffers[0].capacity()
-            if (sz<=0) {
+            if (sz <= 0) {
                 sz = inputBufferSize
             }
             var tempBuf = ByteArray(sz)
@@ -138,8 +136,8 @@ object Player {
             val startTimeMillis = System.currentTimeMillis()
 
             while (!Thread.interrupted() && // 线程未中断
-                        isPlaying // 正在播放
-                    ) {
+                isPlaying // 正在播放
+            ) {
                 if (pauseDecoding()) {
                     continue
                 }
@@ -164,16 +162,16 @@ object Player {
                                 tempBuf = ByteArray(bufSize)
                             }
                             byteBuffer.position(0)
-                            byteBuffer.get(tempBuf,0,bufSize)
+                            byteBuffer.get(tempBuf, 0, bufSize)
                             byteBuffer.clear()
-                            audioTrack.write(tempBuf,0,bufSize)
+                            audioTrack.write(tempBuf, 0, bufSize)
 
                         }
                         // 13. 将输出的流媒体数据释放
                         decoder.releaseOutputBuffer(outputBufferIndex, false)
                     }
                 }
-                if (bufferInfo.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM!=0){
+                if (bufferInfo.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM != 0) {
                     break
                 }
 
@@ -233,7 +231,7 @@ object Player {
 
             // 2. 获取特定的track的Id
             val index = getTargetTrackIndex(extractor, "video/")
-            if (index<0){
+            if (index < 0) {
                 return
             }
 
@@ -251,7 +249,7 @@ object Player {
             // 4. 根据track的信息创建decoder并关联播放的surface
             extractor.selectTrack(index)
             val decoder = MediaCodec.createDecoderByType(mime)
-            decoder.configure(trackFormat,surface,null,0)
+            decoder.configure(trackFormat, surface, null, 0)
 
             // 5. decoder开始
             decoder.start()
@@ -312,13 +310,13 @@ object Player {
         }
 
 
-
     }
 
     private fun decodeMediaData(
         extractor: MediaExtractor,
         decoder: MediaCodec,
-        inputBuffers: Array<ByteBuffer>): Boolean {
+        inputBuffers: Array<ByteBuffer>
+    ): Boolean {
         var isMediaEOS = false
         // 6. 从decoder获取一个输入缓冲的索引
         val inputBufferIndex: Int = decoder.dequeueInputBuffer(TIMEOUT_US)
@@ -354,8 +352,8 @@ object Player {
         return -1
     }
 
-    private fun decodeDelay(bufferInfo: MediaCodec.BufferInfo, startTimeMillis: Long){
-        while (bufferInfo.presentationTimeUs/1000>System.currentTimeMillis()-startTimeMillis){
+    private fun decodeDelay(bufferInfo: MediaCodec.BufferInfo, startTimeMillis: Long) {
+        while (bufferInfo.presentationTimeUs / 1000 > System.currentTimeMillis() - startTimeMillis) {
             try {
                 Thread.sleep(10)
             } catch (e: InterruptedException) {
