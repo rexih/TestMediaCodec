@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+    <SurfaceView
+            android:id="@+id/sv_play"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+            android:id="@+id/tv_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="play"
+            android:alpha="0.5"
+            android:textColor="#fff"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+    <Button
+            android:id="@+id/tv_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pause"
+            android:alpha="0.5"
+            android:textColor="#fff"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_play"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_play"
+            app:layout_constraintStart_toEndOf="@+id/tv_play"
+            android:layout_marginLeft="8dp"/>
+
+    <Button
+            android:id="@+id/tv_resume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="resume"
+            android:alpha="0.5"
+            android:textColor="#fff"
+            app:layout_constraintTop_toTopOf="@+id/tv_play"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_play"
+            app:layout_constraintStart_toEndOf="@+id/tv_pause"
+            android:layout_marginLeft="8dp"/>
+
+    <Button
+            android:id="@+id/tv_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="stop"
+            android:alpha="0.5"
+            android:textColor="#fff"
+            app:layout_constraintTop_toTopOf="@+id/tv_play"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_play"
+            app:layout_constraintStart_toEndOf="@+id/tv_resume"
+            android:layout_marginLeft="8dp"/>
+
+
+</android.support.constraint.ConstraintLayout>
